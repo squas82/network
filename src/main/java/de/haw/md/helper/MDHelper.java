@@ -17,6 +17,8 @@ public class MDHelper {
 
 	private List<NetworkMsgModel> networkMsgModelsList = new ArrayList<>();
 	
+	private List<RecievedPackeges> failedNetworkMsgModelsList = new ArrayList<>();
+	
 	private List<NetworkMsgResponseModel> networkMsgResponseModelsList = new ArrayList<>();
 
 	private List<RouteSolicitationMsgModel> solicitationMsgModelsList = new ArrayList<>();
@@ -55,6 +57,14 @@ public class MDHelper {
 			solicitationResponseMsgModelsList.add((RouteSolicitationResponseMsgModel) msg);
 //			System.err.println("Versendete RouteSolicitationResponseMsgModel: " + solicitationResponseMsgModelsList.size());
 		}
+	}
+
+	public List<RecievedPackeges> getFailedNetworkMsgModelsList() {
+		return failedNetworkMsgModelsList;
+	}
+
+	public void addToFailedNetworkMsgModel(RecievedPackeges failedMsg) {
+		failedNetworkMsgModelsList.add(failedMsg);
 	}
 
 }

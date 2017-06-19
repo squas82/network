@@ -118,8 +118,9 @@ public class NetworkNode extends UntypedActor {
 					routes.remove(recievedPackege.getMsgModel().getDst());
 					handleNetworkMsgHelper(recievedPackege.getMsgModel());
 				} else {
-					System.err.println("Package: " + packageID + " transmishen failed!");
+//					System.err.println("Package: " + packageID + " transmishen failed!");
 					routes.remove(recievedPackege.getMsgModel().getDst());
+					MDHelper.getInstance().addToFailedNetworkMsgModel(recievedPackege);
 					packageToRemove.add(packageID);
 				}
 			}
@@ -137,7 +138,7 @@ public class NetworkNode extends UntypedActor {
 				if (recievedPackagesMap.containsKey(networkMsgResponseModel.getOriginalId())) {
 					RecievedPackeges recievedPackeges = recievedPackagesMap.get(networkMsgResponseModel.getOriginalId());
 					recievedPackeges.setRecieved(true);
-					System.out.println("Package successful transmittet, PackegeID: " + recievedPackeges.getMsgModel().getId());
+//					System.out.println("Package successful transmittet, PackegeID: " + recievedPackeges.getMsgModel().getId());
 				}
 
 			} else {
@@ -159,8 +160,8 @@ public class NetworkNode extends UntypedActor {
 				NetworkMsgResponseModel networkMsgResponseModel = new NetworkMsgResponseModel(MDHelper.generatePackageID(), networkMsgModel.getDst(),
 						networkMsgModel.getOriginalSrc(), networkMsgModel.getId(), true);
 				handleNetworkMsgHelper(networkMsgResponseModel);
-				System.out.println("Package " + networkMsgModel.getId() + " recieved! - Src: " + networkMsgModel.getOriginalSrc() + " | Destination: "
-						+ networkMsgModel.getDst());
+//				System.out.println("Package " + networkMsgModel.getId() + " recieved! - Src: " + networkMsgModel.getOriginalSrc() + " | Destination: "
+//						+ networkMsgModel.getDst());
 			}
 		} else {
 			if (nodeID.compareToIgnoreCase(networkMsgModel.getSrc()) == 0) {
