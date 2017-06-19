@@ -8,6 +8,8 @@ public class StaticValues {
 	public static String[] ROUTES = { "A-C", "A-B", "B-C", "B-D", "C-H", "C-F", "F-H", "H-I", "D-E", "E-F", "E-G", "F-G", "F-I" };
 
 	public static String[] NODES = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
+	
+	public static int MAX_ATTEMPTS_TO_TIMEOUT = 5;
 
 	public static final Map<String, String[]> NEIGHBOURS = createMap();
 

@@ -16,6 +16,9 @@ public class RouteSolicitationResponseMsgModel extends MsgModel implements Clone
 	@JsonProperty("route")
 	private Route route;
 
+//	@JsonProperty("last")
+//	private String last;
+	
 	@JsonProperty("hops")
 	private int hops;
 

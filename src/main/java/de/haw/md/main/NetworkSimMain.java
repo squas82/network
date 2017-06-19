@@ -15,15 +15,16 @@ import scala.concurrent.duration.Duration;
 public class NetworkSimMain {
 
 	private static String CHANNEL = "NetworkTest";
-
+	
 	public static void main(String[] args) {
 		ActorSystem system = ActorSystemContainer.getInstance().getSystem();
-		system.actorOf(Props.create(Network.class, CHANNEL));
+		
 		for (int i = 0; i < StaticValues.NODES.length; i++) 
 			system.actorOf(Props.create(NetworkNode.class, CHANNEL, StaticValues.NODES[i]));
 		
+		system.actorOf(Props.create(Network.class, CHANNEL));
 		final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
-		//system.scheduler().scheduleOnce(Duration.Zero(), publisher, "Tick", system.dispatcher(), publisher);
+		
 		system.scheduler().schedule(Duration.Zero(), Duration.create(100, TimeUnit.MILLISECONDS), publisher, "Tick", system.dispatcher(), publisher);
 	}
 
