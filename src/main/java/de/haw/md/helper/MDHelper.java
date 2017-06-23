@@ -67,4 +67,41 @@ public class MDHelper {
 		failedNetworkMsgModelsList.add(failedMsg);
 	}
 
+	public List<NetworkMsgModel> getNetworkMsgModelsList() {
+		return networkMsgModelsList;
+	}
+
+	public void setNetworkMsgModelsList(List<NetworkMsgModel> networkMsgModelsList) {
+		this.networkMsgModelsList = networkMsgModelsList;
+	}
+
+	public List<NetworkMsgResponseModel> getNetworkMsgResponseModelsList() {
+		return networkMsgResponseModelsList;
+	}
+
+	public void setNetworkMsgResponseModelsList(List<NetworkMsgResponseModel> networkMsgResponseModelsList) {
+		this.networkMsgResponseModelsList = networkMsgResponseModelsList;
+	}
+
+	public List<RouteSolicitationMsgModel> getSolicitationMsgModelsList() {
+		return solicitationMsgModelsList;
+	}
+
+	public void setSolicitationMsgModelsList(List<RouteSolicitationMsgModel> solicitationMsgModelsList) {
+		this.solicitationMsgModelsList = solicitationMsgModelsList;
+	}
+
+	public List<RouteSolicitationResponseMsgModel> getSolicitationResponseMsgModelsList() {
+		return solicitationResponseMsgModelsList;
+	}
+
+	public void setSolicitationResponseMsgModelsList(
+			List<RouteSolicitationResponseMsgModel> solicitationResponseMsgModelsList) {
+		this.solicitationResponseMsgModelsList = solicitationResponseMsgModelsList;
+	}
+
+	public void setFailedNetworkMsgModelsList(List<RecievedPackeges> failedNetworkMsgModelsList) {
+		this.failedNetworkMsgModelsList = failedNetworkMsgModelsList;
+	}
+	
 }
