@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane prefHeight="1000.0" prefWidth="1600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane prefHeight="1000.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.5" layoutX="320.0" layoutY="131.0" prefHeight="1000.0" prefWidth="1600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -36,7 +35,7 @@
                      <children>
                         <ImageView fitHeight="452.0" fitWidth="790.0">
                            <image>
-                              <Image url="@../../../../../../../../../../cloud/Dropbox/Team-Ordner%20„Master%20Informatik“/Ausarbeitungen/Sascha/MD/Zeichnung1.png" />
+                              <Image url="@src/main/resources/Zeichnung1.png" />
                            </image>
                            <GridPane.margin>
                               <Insets left="3.0" />
@@ -82,10 +81,10 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField prefHeight="25.0" prefWidth="334.0" GridPane.columnIndex="1" />
+                        <TextField id="sumMsg" prefHeight="25.0" prefWidth="334.0" GridPane.columnIndex="1" />
                         <Label prefHeight="26.0" prefWidth="398.0" text="Gesamte gesendete Nachrichten" />
                         <Label prefHeight="26.0" prefWidth="398.0" text="Gesendete RouteSolicitation Nachrichten" GridPane.rowIndex="1" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField id="sumSoliMsg" prefHeight="25.0" prefWidth="334.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
