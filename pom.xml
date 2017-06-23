@@ -96,7 +96,7 @@
 					<archive>
 						<manifest>
 							<!-- Jar file entry point -->
-							<mainClass>de.haw.md.company.gui.main.GuiMultiAgentMain</mainClass>
+							<mainClass>de.haw.md.gui.NetworkGuiMain</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

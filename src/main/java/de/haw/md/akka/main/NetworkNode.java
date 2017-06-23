@@ -66,8 +66,8 @@ public class NetworkNode extends UntypedActor {
 	}
 
 	/**
-	 * Erhält alle Nachrichten und ordnet sie den Methoden zu damit diese
-	 * verarbeitet weden können.
+	 * Erhï¿½lt alle Nachrichten und ordnet sie den Methoden zu damit diese
+	 * verarbeitet weden kï¿½nnen.
 	 * 
 	 * @see akka.actor.UntypedActor#onReceive(java.lang.Object)
 	 */
@@ -118,7 +118,7 @@ public class NetworkNode extends UntypedActor {
 					routes.remove(recievedPackege.getMsgModel().getDst());
 					handleNetworkMsgHelper(recievedPackege.getMsgModel());
 				} else {
-//					System.err.println("Package: " + packageID + " transmishen failed!");
+//					System.err.println("Package: " + packageID + " transmission failed!");
 					routes.remove(recievedPackege.getMsgModel().getDst());
 					MDHelper.getInstance().addToFailedNetworkMsgModel(recievedPackege);
 					packageToRemove.add(packageID);
@@ -296,7 +296,7 @@ public class NetworkNode extends UntypedActor {
 	}
 
 	/**
-	 * Überprüft mithilfe der ID ob eine Routenanfrage schon bearbeitet wurde
+	 * ï¿½berprï¿½ft mithilfe der ID ob eine Routenanfrage schon bearbeitet wurde
 	 * 
 	 * @param id
 	 * @return
