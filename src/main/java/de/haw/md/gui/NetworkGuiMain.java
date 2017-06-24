@@ -52,11 +52,17 @@ public class NetworkGuiMain extends Application {
 					@Override
 					public void handle(ActionEvent arg0) {
 						TextField fieldsumMsg = (TextField) primaryStage.getScene().lookup("#sumMsg");
+						TextField fieldsumResp = (TextField) primaryStage.getScene().lookup("#sumMsgResp");
 						TextField fieldsumSoliMsg = (TextField) primaryStage.getScene().lookup("#sumSoliMsg");
+						TextField fieldsumSoliRespMsg = (TextField) primaryStage.getScene().lookup("#sumSoliRespMsg");
 						if (fieldsumMsg != null)
 							fieldsumMsg.setText(String.valueOf(MDHelper.getInstance().getNetworkMsgModelsList().size()));
+						if (fieldsumResp != null)
+							fieldsumResp.setText(String.valueOf(MDHelper.getInstance().getNetworkMsgResponseModelsList().size()));
 						if (fieldsumSoliMsg != null)
 							fieldsumSoliMsg.setText(String.valueOf(MDHelper.getInstance().getSolicitationMsgModelsList().size()));
+						if (fieldsumSoliRespMsg != null)
+							fieldsumSoliRespMsg.setText(String.valueOf(MDHelper.getInstance().getSolicitationResponseMsgModelsList().size()));
 					}
 
 				}));
@@ -95,16 +101,16 @@ public class NetworkGuiMain extends Application {
 	}
 
 	public static void main(String[] args) {
-		ActorSystem system = ActorSystemContainer.getInstance().getSystem();
-
-		for (int i = 0; i < StaticValues.NODES.length; i++)
-			system.actorOf(Props.create(NetworkNode.class, CHANNEL, StaticValues.NODES[i]));
-
-		system.actorOf(Props.create(Network.class, CHANNEL));
-		final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
-
-		system.scheduler().schedule(Duration.Zero(), Duration.create(1000, TimeUnit.MILLISECONDS), publisher, "Tick",
-				system.dispatcher(), publisher);
+//		ActorSystem system = ActorSystemContainer.getInstance().getSystem();
+//
+//		for (int i = 0; i < StaticValues.NODES.length; i++)
+//			system.actorOf(Props.create(NetworkNode.class, CHANNEL, StaticValues.NODES[i]));
+//
+//		system.actorOf(Props.create(Network.class, CHANNEL));
+//		final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
+//
+//		system.scheduler().schedule(Duration.Zero(), Duration.create(1000, TimeUnit.MILLISECONDS), publisher, "Tick",
+//				system.dispatcher(), publisher);
 
 		launch(args);
 	}
