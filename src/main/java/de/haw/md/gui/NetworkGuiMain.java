@@ -16,10 +16,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -44,17 +47,18 @@ public class NetworkGuiMain extends Application {
 		this.primaryStage.setTitle("Network Simulation");
 
 		initRootLayout();
-
+		
 		animation = new Timeline();
 		animation.getKeyFrames()
 				.add(new KeyFrame(javafx.util.Duration.millis(SEQUENCE_DURATION), new EventHandler<ActionEvent>() {
 
+					TextField fieldsumMsg = (TextField) primaryStage.getScene().lookup("#sumMsg");
+					TextField fieldsumResp = (TextField) primaryStage.getScene().lookup("#sumMsgResp");
+					TextField fieldsumSoliMsg = (TextField) primaryStage.getScene().lookup("#sumSoliMsg");
+					TextField fieldsumSoliRespMsg = (TextField) primaryStage.getScene().lookup("#sumSoliRespMsg");
+					
 					@Override
 					public void handle(ActionEvent arg0) {
-						TextField fieldsumMsg = (TextField) primaryStage.getScene().lookup("#sumMsg");
-						TextField fieldsumResp = (TextField) primaryStage.getScene().lookup("#sumMsgResp");
-						TextField fieldsumSoliMsg = (TextField) primaryStage.getScene().lookup("#sumSoliMsg");
-						TextField fieldsumSoliRespMsg = (TextField) primaryStage.getScene().lookup("#sumSoliRespMsg");
 						if (fieldsumMsg != null)
 							fieldsumMsg.setText(String.valueOf(MDHelper.getInstance().getNetworkMsgModelsList().size()));
 						if (fieldsumResp != null)
@@ -101,16 +105,16 @@ public class NetworkGuiMain extends Application {
 	}
 
 	public static void main(String[] args) {
-//		ActorSystem system = ActorSystemContainer.getInstance().getSystem();
-//
-//		for (int i = 0; i < StaticValues.NODES.length; i++)
-//			system.actorOf(Props.create(NetworkNode.class, CHANNEL, StaticValues.NODES[i]));
-//
-//		system.actorOf(Props.create(Network.class, CHANNEL));
-//		final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
-//
-//		system.scheduler().schedule(Duration.Zero(), Duration.create(1000, TimeUnit.MILLISECONDS), publisher, "Tick",
-//				system.dispatcher(), publisher);
+		ActorSystem system = ActorSystemContainer.getInstance().getSystem();
+
+		for (int i = 0; i < StaticValues.NODES.length; i++)
+			system.actorOf(Props.create(NetworkNode.class, CHANNEL, StaticValues.NODES[i]));
+
+		system.actorOf(Props.create(Network.class, CHANNEL));
+		final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
+
+		system.scheduler().schedule(Duration.Zero(), Duration.create(1000, TimeUnit.MILLISECONDS), publisher, "Tick",
+				system.dispatcher(), publisher);
 
 		launch(args);
 	}
