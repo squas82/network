@@ -214,26 +214,9 @@
 								<TextField id="sum06" maxHeight="25.0" maxWidth="425.0"
 									minHeight="25.0" minWidth="425.0" prefHeight="25.0" prefWidth="425.0"
 									GridPane.columnIndex="1" GridPane.rowIndex="5" />
-								<BarChart prefHeight="298.0" prefWidth="796.0"
-									GridPane.columnSpan="2" GridPane.rowIndex="6">
+								<AreaChart minHeight="500.0" prefHeight="500.0" prefWidth="796.0" id="lineChart" GridPane.columnSpan="2" GridPane.rowIndex="7">
 									<xAxis>
-										<CategoryAxis side="BOTTOM" />
-									</xAxis>
-									<yAxis>
-										<NumberAxis side="LEFT" />
-									</yAxis>
-								</BarChart>
-								<LineChart GridPane.columnSpan="2" GridPane.rowIndex="7">
-									<xAxis>
-										<CategoryAxis side="BOTTOM" />
-									</xAxis>
-									<yAxis>
-										<NumberAxis side="LEFT" />
-									</yAxis>
-								</LineChart>
-								<AreaChart GridPane.columnSpan="2" GridPane.rowIndex="8">
-									<xAxis>
-										<CategoryAxis side="BOTTOM" />
+										<NumberAxis side="BOTTOM" />
 									</xAxis>
 									<yAxis>
 										<NumberAxis side="LEFT" />

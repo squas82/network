@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.haw.md.helper.MDHelper;
+import de.haw.md.helper.StaticValues;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "originalId", "recieved" })
@@ -20,7 +20,7 @@ public class NetworkMsgResponseModel extends MsgModel{
 	private boolean recieved;
 	
 	public NetworkMsgResponseModel() {
-		this(MDHelper.generatePackageID(), "", "", "", false);
+		this(StaticValues.generatePackageID(), "", "", "", false);
 	}
 
 	public NetworkMsgResponseModel(String id, String src, String dst, String originalId, boolean recieved) {

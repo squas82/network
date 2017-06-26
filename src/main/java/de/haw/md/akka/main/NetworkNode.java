@@ -120,7 +120,7 @@ public class NetworkNode extends UntypedActor {
 				} else {
 //					System.err.println("Package: " + packageID + " transmission failed!");
 					routes.remove(recievedPackege.getMsgModel().getDst());
-					MDHelper.getInstance().addToFailedNetworkMsgModel(recievedPackege);
+					MDHelper.getInstance().addToFailedNetworkMsgModel();
 					packageToRemove.add(packageID);
 				}
 			}
@@ -135,15 +135,18 @@ public class NetworkNode extends UntypedActor {
 		if (!proofRecieved(networkMsgResponseModel.getId())) {
 			if (nodeID.compareToIgnoreCase(networkMsgResponseModel.getDst()) == 0 && nodeID.compareToIgnoreCase(networkMsgResponseModel.getSrc()) == 0) {
 				recievedPackages.add(networkMsgResponseModel.getId());
+				MDHelper.getInstance().addNetworkMsgResponseModel();
 				if (recievedPackagesMap.containsKey(networkMsgResponseModel.getOriginalId())) {
 					RecievedPackeges recievedPackeges = recievedPackagesMap.get(networkMsgResponseModel.getOriginalId());
 					recievedPackeges.setRecieved(true);
-//					System.out.println("Package successful transmittet, PackegeID: " + recievedPackeges.getMsgModel().getId());
+					System.out.println("Package successful transmittet, PackegeID: " + recievedPackeges.getMsgModel().getId());
 				}
 
 			} else {
-				if (nodeID.compareToIgnoreCase(networkMsgResponseModel.getSrc()) == 0)
+				if (nodeID.compareToIgnoreCase(networkMsgResponseModel.getSrc()) == 0){
+					MDHelper.getInstance().addNetworkMsgResponseModel();
 					handleNetworkMsgHelper(networkMsgResponseModel);
+				}
 			}
 		}
 	}
@@ -156,8 +159,9 @@ public class NetworkNode extends UntypedActor {
 	private void handleNetworkMsg(NetworkMsgModel networkMsgModel) {
 		if (nodeID.compareToIgnoreCase(networkMsgModel.getDst()) == 0 && nodeID.compareToIgnoreCase(networkMsgModel.getSrc()) == 0) {
 			if (!proofRecieved(networkMsgModel.getId())) {
+				MDHelper.getInstance().addNetworkMsgModel();
 				recievedPackages.add(networkMsgModel.getId());
-				NetworkMsgResponseModel networkMsgResponseModel = new NetworkMsgResponseModel(MDHelper.generatePackageID(), networkMsgModel.getDst(),
+				NetworkMsgResponseModel networkMsgResponseModel = new NetworkMsgResponseModel(StaticValues.generatePackageID(), networkMsgModel.getDst(),
 						networkMsgModel.getOriginalSrc(), networkMsgModel.getId(), true);
 				handleNetworkMsgHelper(networkMsgResponseModel);
 //				System.out.println("Package " + networkMsgModel.getId() + " recieved! - Src: " + networkMsgModel.getOriginalSrc() + " | Destination: "
@@ -165,6 +169,7 @@ public class NetworkNode extends UntypedActor {
 			}
 		} else {
 			if (nodeID.compareToIgnoreCase(networkMsgModel.getSrc()) == 0) {
+				MDHelper.getInstance().addNetworkMsgModel();
 				if (nodeID.compareToIgnoreCase(networkMsgModel.getSrc()) == 0 && nodeID.compareToIgnoreCase(networkMsgModel.getOriginalSrc()) == 0) {
 					recievedPackagesMap.put(networkMsgModel.getId(), new RecievedPackeges(networkMsgModel, false, LocalDateTime.now()));
 				}
@@ -182,7 +187,7 @@ public class NetworkNode extends UntypedActor {
 			for (String neighbours : StaticValues.NEIGHBOURS.get(nodeID)) {
 				List<String> routes = new ArrayList<>();
 				routes.add(neighbours);
-				RouteSolicitationMsgModel routeSolicitationMsgModel = new RouteSolicitationMsgModel(MDHelper.generatePackageID(), neighbours, nodeID,
+				RouteSolicitationMsgModel routeSolicitationMsgModel = new RouteSolicitationMsgModel(StaticValues.generatePackageID(), neighbours, nodeID,
 						networkMsgModel.getDst(), new Route(nodeID, networkMsgModel.getDst(), neighbours, routes), 1);
 				solificationRequests.add(routeSolicitationMsgModel.getId());
 				send(routeSolicitationMsgModel);
@@ -200,6 +205,7 @@ public class NetworkNode extends UntypedActor {
 	private void handleRouteSoli(RouteSolicitationMsgModel solicitationMsgModel) throws CloneNotSupportedException {
 		if (solicitationMsgModel.getSrc().compareToIgnoreCase(nodeID) == 0) {
 			if (!proofSolificationRequests(solicitationMsgModel.getId())) {
+				MDHelper.getInstance().addSolicitationMsgModel();
 				solificationRequests.add(solicitationMsgModel.getId());
 				if (routes.containsKey(solicitationMsgModel.getDst())) {
 					if (solicitationMsgModel.getHops() > 1) {
@@ -249,6 +255,7 @@ public class NetworkNode extends UntypedActor {
 	 */
 	private void handleRouteSoliResponse(RouteSolicitationResponseMsgModel routeSolicitationResponseMsgModel) {
 		if (routeSolicitationResponseMsgModel.getSrc().compareToIgnoreCase(nodeID) == 0) {
+			MDHelper.getInstance().addSolicitationResponseMsgModel();
 			if (routeSolicitationResponseMsgModel.getRoute().getSrc().compareToIgnoreCase(nodeID) != 0) {
 				String src;
 				int index = routeSolicitationResponseMsgModel.getRoute().getRoute().indexOf(nodeID) - 1;

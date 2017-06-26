@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import de.haw.md.akka.main.Route;
-import de.haw.md.helper.MDHelper;
+import de.haw.md.helper.StaticValues;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "route", "hops" })
@@ -23,7 +23,7 @@ public class RouteSolicitationResponseMsgModel extends MsgModel implements Clone
 	private int hops;
 
 	public RouteSolicitationResponseMsgModel() {
-		this(MDHelper.generatePackageID(), "", "", "", new Route("", "", "", new ArrayList<>()), -1);
+		this(StaticValues.generatePackageID(), "", "", "", new Route("", "", "", new ArrayList<>()), -1);
 	}
 
 	public RouteSolicitationResponseMsgModel(String id, String src, String originalSrc, String dst, Route route, int hops) {

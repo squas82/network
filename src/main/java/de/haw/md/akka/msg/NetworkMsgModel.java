@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.haw.md.helper.MDHelper;
+import de.haw.md.helper.StaticValues;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "data"})
@@ -17,8 +17,8 @@ public class NetworkMsgModel extends MsgModel{
 	private byte[] data;
 	
 	public NetworkMsgModel() {
-		this(MDHelper.generatePackageID(), "", "", MDHelper.generatePackageID().getBytes());
-		this.data = MDHelper.generatePackageID().getBytes();
+		this(StaticValues.generatePackageID(), "", "", StaticValues.generatePackageID().getBytes());
+		this.data = StaticValues.generatePackageID().getBytes();
 	}
 
 	public NetworkMsgModel(String id, String src, String dst, byte[] data) {

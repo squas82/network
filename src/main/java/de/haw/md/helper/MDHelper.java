@@ -1,29 +1,22 @@
 package de.haw.md.helper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.math.BigDecimal;
 
 import de.haw.md.akka.msg.MsgModel;
-import de.haw.md.akka.msg.NetworkMsgModel;
-import de.haw.md.akka.msg.NetworkMsgResponseModel;
-import de.haw.md.akka.msg.RouteSolicitationMsgModel;
-import de.haw.md.akka.msg.RouteSolicitationResponseMsgModel;
 
 public class MDHelper {
 
 	private static MDHelper instance = null;
 
-	private List<NetworkMsgModel> networkMsgModelsList = new ArrayList<>();
-	
-	private List<RecievedPackeges> failedNetworkMsgModelsList = new ArrayList<>();
-	
-	private List<NetworkMsgResponseModel> networkMsgResponseModelsList = new ArrayList<>();
+	private BigDecimal networkMsgModelsList = BigDecimal.ZERO;
 
-	private List<RouteSolicitationMsgModel> solicitationMsgModelsList = new ArrayList<>();
+	private BigDecimal failedNetworkMsgModelsList = BigDecimal.ZERO;
 
-	private List<RouteSolicitationResponseMsgModel> solicitationResponseMsgModelsList = new ArrayList<>();
+	private BigDecimal networkMsgResponseModelsList = BigDecimal.ZERO;
+
+	private BigDecimal solicitationMsgModelsList = BigDecimal.ZERO;
+
+	private BigDecimal solicitationResponseMsgModelsList = BigDecimal.ZERO;
 
 	public static synchronized MDHelper getInstance() {
 		if (instance == null) {
@@ -32,76 +25,68 @@ public class MDHelper {
 		return instance;
 	}
 
-	public static String generatePackageID() {
-		return UUID.randomUUID().toString();
-	}
-
-	public static int randInt(int min, int max) {
-		return new Random().nextInt((max - min) + 1) + min;
-	}
-
 	public void addMsgToList(MsgModel msg) {
-		if (msg instanceof NetworkMsgModel) {
-			networkMsgModelsList.add((NetworkMsgModel) msg);
-//			System.err.println("Versendete NetworkMsgModel: " + networkMsgModelsList.size());
-		}
-		if (msg instanceof NetworkMsgResponseModel) {
-			networkMsgResponseModelsList.add((NetworkMsgResponseModel) msg);
-//			System.err.println("Versendete NetworkMsgResponseModel: " + networkMsgResponseModelsList.size());
-		}
-		if (msg instanceof RouteSolicitationMsgModel) {
-			solicitationMsgModelsList.add((RouteSolicitationMsgModel) msg);
-//			System.err.println("Versendete RouteSolicitationMsgModel: " + solicitationMsgModelsList.size());
-		}
-		if (msg instanceof RouteSolicitationResponseMsgModel) {
-			solicitationResponseMsgModelsList.add((RouteSolicitationResponseMsgModel) msg);
-//			System.err.println("Versendete RouteSolicitationResponseMsgModel: " + solicitationResponseMsgModelsList.size());
-		}
+//		if (msg instanceof NetworkMsgModel) {
+//			networkMsgModelsList++;
+//		}
+//		if (msg instanceof NetworkMsgResponseModel) {
+//			networkMsgResponseModelsList++;
+//		}
+//		if (msg instanceof RouteSolicitationMsgModel) {
+//			solicitationMsgModelsList++;
+//		}
+//		if (msg instanceof RouteSolicitationResponseMsgModel) {
+//			solicitationResponseMsgModelsList++;
+//		}
 	}
 
-	public List<RecievedPackeges> getFailedNetworkMsgModelsList() {
-		return failedNetworkMsgModelsList;
+	public BigDecimal getNetworkMsgModelsList() {
+		BigDecimal tmp = new BigDecimal(networkMsgModelsList.intValue());
+		networkMsgModelsList = BigDecimal.ZERO;
+		return tmp;
 	}
 
-	public void addToFailedNetworkMsgModel(RecievedPackeges failedMsg) {
-		failedNetworkMsgModelsList.add(failedMsg);
+	public BigDecimal getFailedNetworkMsgModelsList() {
+		BigDecimal tmp = new BigDecimal(failedNetworkMsgModelsList.intValue());
+		failedNetworkMsgModelsList = BigDecimal.ZERO;
+		return tmp;
 	}
 
-	public List<NetworkMsgModel> getNetworkMsgModelsList() {
-		return networkMsgModelsList;
+	public BigDecimal getNetworkMsgResponseModelsList() {
+		BigDecimal tmp = new BigDecimal(networkMsgResponseModelsList.intValue());
+		networkMsgResponseModelsList = BigDecimal.ZERO;
+		return tmp;
 	}
 
-	public void setNetworkMsgModelsList(List<NetworkMsgModel> networkMsgModelsList) {
-		this.networkMsgModelsList = networkMsgModelsList;
+	public BigDecimal getSolicitationMsgModelsList() {
+		BigDecimal tmp = new BigDecimal(solicitationMsgModelsList.intValue());
+		solicitationMsgModelsList = BigDecimal.ZERO;
+		return tmp;
 	}
 
-	public List<NetworkMsgResponseModel> getNetworkMsgResponseModelsList() {
-		return networkMsgResponseModelsList;
-	}
-
-	public void setNetworkMsgResponseModelsList(List<NetworkMsgResponseModel> networkMsgResponseModelsList) {
-		this.networkMsgResponseModelsList = networkMsgResponseModelsList;
-	}
-
-	public List<RouteSolicitationMsgModel> getSolicitationMsgModelsList() {
-		return solicitationMsgModelsList;
-	}
-
-	public void setSolicitationMsgModelsList(List<RouteSolicitationMsgModel> solicitationMsgModelsList) {
-		this.solicitationMsgModelsList = solicitationMsgModelsList;
-	}
-
-	public List<RouteSolicitationResponseMsgModel> getSolicitationResponseMsgModelsList() {
-		return solicitationResponseMsgModelsList;
-	}
-
-	public void setSolicitationResponseMsgModelsList(
-			List<RouteSolicitationResponseMsgModel> solicitationResponseMsgModelsList) {
-		this.solicitationResponseMsgModelsList = solicitationResponseMsgModelsList;
-	}
-
-	public void setFailedNetworkMsgModelsList(List<RecievedPackeges> failedNetworkMsgModelsList) {
-		this.failedNetworkMsgModelsList = failedNetworkMsgModelsList;
+	public BigDecimal getSolicitationResponseMsgModelsList() {
+		BigDecimal tmp = new BigDecimal(solicitationResponseMsgModelsList.intValue());
+		solicitationResponseMsgModelsList = BigDecimal.ZERO;
+		return tmp;
 	}
 	
+	public void addToFailedNetworkMsgModel() {
+		this.failedNetworkMsgModelsList = this.failedNetworkMsgModelsList.add(BigDecimal.ONE);
+	}
+
+	public void addNetworkMsgModel() {
+		this.networkMsgModelsList = this.networkMsgModelsList.add(BigDecimal.ONE);
+	}
+
+	public void addNetworkMsgResponseModel() {
+		this.networkMsgResponseModelsList = this.networkMsgResponseModelsList.add(BigDecimal.ONE);
+	}
+
+	public void addSolicitationMsgModel() {
+		this.solicitationMsgModelsList = this.solicitationMsgModelsList.add(BigDecimal.ONE);
+	}
+
+	public void addSolicitationResponseMsgModel() {
+		this.solicitationResponseMsgModelsList = this.solicitationResponseMsgModelsList.add(BigDecimal.ONE);
+	}
 }

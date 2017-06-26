@@ -1,0 +1,9 @@
+diff a/src/main/java/de/haw/md/helper/StaticValues.java b/src/main/java/de/haw/md/helper/StaticValues.java	(rejected hunks)
+@@ -28,7 +28,6 @@
+ 										"S-T"
+ 	};
+ 
+-	public static String[] NODES = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
+ 	public static String[] NODES = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" };
+ 	
+ 	public static int MAX_ATTEMPTS_TO_TIMEOUT = 5;
