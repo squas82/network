@@ -38,8 +38,12 @@ public class NetworkNode extends UntypedActor {
 	private List<String> recievedPackages = new ArrayList<>();
 
 	private Map<String, RecievedPackeges> recievedPackagesMap = new HashMap<>();
+	
+	private List<String> sendMessages = new ArrayList<>();
 
 	private long counter;
+	
+	private long counterClearList;
 
 	private boolean isActive = true;
 
@@ -49,6 +53,7 @@ public class NetworkNode extends UntypedActor {
 		this.routes = createRoutes();
 		this.queue = new ArrayList<>();
 		this.counter = System.currentTimeMillis();
+		this.counterClearList = System.currentTimeMillis();
 		ActorRef mediator = DistributedPubSub.get(getContext().system()).mediator();
 		mediator.tell(new DistributedPubSubMediator.Subscribe(channel, getSelf()), getSelf());
 
@@ -97,10 +102,16 @@ public class NetworkNode extends UntypedActor {
 				NetworkMsgResponseModel networkMsgResponseModel = (NetworkMsgResponseModel) msg;
 				handleNetworkMsgResponseModel(networkMsgResponseModel);
 			}
-			if ((System.currentTimeMillis() - counter) > 500) {
+			if ((System.currentTimeMillis() - counter) > 1000) {
 				counter = System.currentTimeMillis();
 				proofQueue();
 				proofRecievedPackagesMap();
+			}
+			if ((System.currentTimeMillis() - counterClearList) > 5000) {
+				counterClearList = System.currentTimeMillis();
+				sendMessages.clear();
+				recievedPackages.clear();
+				solificationRequests.clear();
 			}
 		}
 	}
@@ -110,7 +121,7 @@ public class NetworkNode extends UntypedActor {
 		for (String packageID : recievedPackagesMap.keySet()) {
 			RecievedPackeges recievedPackege = recievedPackagesMap.get(packageID);
 			if (!recievedPackege.isRecieved() && recievedPackege.getTimestamp().plusSeconds(1).isBefore(LocalDateTime.now())) {
-				if (recievedPackege.getSendingAttempts() < 3) {
+				if (recievedPackege.getSendingAttempts() < StaticValues.SENDING_ATTEMPTS) {
 					recievedPackege.setSendingAttempts(recievedPackege.getSendingAttempts() + 1);
 					handleNetworkMsgHelper(recievedPackege.getMsgModel());
 				} else if (recievedPackege.getSendingAttempts() < StaticValues.MAX_ATTEMPTS_TO_TIMEOUT) {
@@ -139,7 +150,7 @@ public class NetworkNode extends UntypedActor {
 				if (recievedPackagesMap.containsKey(networkMsgResponseModel.getOriginalId())) {
 					RecievedPackeges recievedPackeges = recievedPackagesMap.get(networkMsgResponseModel.getOriginalId());
 					recievedPackeges.setRecieved(true);
-					System.out.println("Package successful transmittet, PackegeID: " + recievedPackeges.getMsgModel().getId());
+//					System.out.println("Package successful transmittet, PackegeID: " + recievedPackeges.getMsgModel().getId());
 				}
 
 			} else {
@@ -284,7 +295,13 @@ public class NetworkNode extends UntypedActor {
 	}
 
 	private void send(Object object) {
-		DistributedPubSub.get(getContext().system()).mediator().tell(new DistributedPubSubMediator.Publish(channel, object), getSelf());
+		if(object instanceof MsgModel) {
+			MsgModel tempObject = (MsgModel) object;
+			if(!proofSend(tempObject.getId())) {
+				sendMessages.add(tempObject.getId());
+				DistributedPubSub.get(getContext().system()).mediator().tell(new DistributedPubSubMediator.Publish(channel, object), getSelf());
+			}
+		}
 	}
 
 	private List<String> copyList(List<String> route) {
@@ -302,6 +319,13 @@ public class NetworkNode extends UntypedActor {
 		return false;
 	}
 
+	private boolean proofSend(String id) {
+		for (String sendMessage : sendMessages)
+			if (sendMessage.compareToIgnoreCase(id) == 0)
+				return true;
+		return false;
+	}
+	
 	/**
 	 * �berpr�ft mithilfe der ID ob eine Routenanfrage schon bearbeitet wurde
 	 * 

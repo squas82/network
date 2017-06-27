@@ -32,9 +32,11 @@ public class StaticValues {
     public static String[] NODES = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 //	public static String[] NODES = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" };
 	
-	public static int MAX_ATTEMPTS_TO_TIMEOUT = 5;
+	public static int MAX_ATTEMPTS_TO_TIMEOUT = 10;
 
 	public static final Map<String, String[]> NEIGHBOURS = createMap();
+
+	public static final int SENDING_ATTEMPTS = 5;
 
 	private static Map<String, String[]> createMap() {
 		Map<String, String[]> myMap = new HashMap<>();

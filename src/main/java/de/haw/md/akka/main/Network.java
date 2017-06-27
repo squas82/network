@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import akka.cluster.pubsub.DistributedPubSub;
 import akka.cluster.pubsub.DistributedPubSubMediator;
+import de.haw.md.akka.msg.ActorController;
 import de.haw.md.akka.msg.MsgModel;
 import de.haw.md.akka.msg.NetworkMsgModel;
 import de.haw.md.helper.MDHelper;
@@ -42,7 +43,11 @@ public class Network extends UntypedActor {
 			}
 		} else
 			unhandled(msg);
-
+	}
+	
+	public void sendActorController(String id, boolean active){
+		ActorController actorController = new ActorController(id, active);
+		mediator.tell(new DistributedPubSubMediator.Publish(channel, actorController), getSelf());
 	}
 
 	public NetworkMsgModel createPackage() {

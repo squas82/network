@@ -25,6 +25,8 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -40,7 +42,7 @@ public class NetworkGuiMain extends Application {
 	private Stage primaryStage;
 	private AnchorPane rootLayout;
 
-	private static final long SEQUENCE_DURATION = 500;
+	private static final long SEQUENCE_DURATION = 100;
 	private static final long PACKAGE_DURATION = SEQUENCE_DURATION * 1;
 	private Timeline animation;
 
@@ -54,6 +56,10 @@ public class NetworkGuiMain extends Application {
 	private XYChart.Series<Number, Number> chartSeriesNetworkRespMsg;
 	private XYChart.Series<Number, Number> chartSeriesSoliMsg;
 	private XYChart.Series<Number, Number> chartSeriesSoliRespMsg;
+	private XYChart.Series<Number, Number> chartFailedMsg;
+	
+	private ChoiceBox<String> knotsdeakt;
+	private ChoiceBox<String> knotsakt;
 
 	private int counter = 0;
 
@@ -69,10 +75,17 @@ public class NetworkGuiMain extends Application {
 
 		lineChart = (AreaChart<Number, Number>) primaryStage.getScene().lookup("#lineChart");
 		NumberAxis xAxis = (NumberAxis) lineChart.getXAxis();
+		NumberAxis yAxis = (NumberAxis) lineChart.getYAxis();
 		xAxis.setAutoRanging(false);
 		xAxis.setLowerBound(0);
 		xAxis.setUpperBound(100);
+		xAxis.setTickUnit(5);
 		xAxis.setLabel("Vergangene Ticks");
+		yAxis.setAutoRanging(false);
+		yAxis.setLowerBound(0);
+		yAxis.setUpperBound(40);
+		yAxis.setTickUnit(2);
+		yAxis.setLabel("Anzahl Nachrichten");
 		chartSeriesNetworkMsg = new XYChart.Series<>();
 		chartSeriesNetworkMsg.setName("NetworkMsg");
 		chartSeriesNetworkRespMsg = new XYChart.Series<>();
@@ -81,13 +94,39 @@ public class NetworkGuiMain extends Application {
 		chartSeriesSoliMsg.setName("SoliMsg");
 		chartSeriesSoliRespMsg = new XYChart.Series<>();
 		chartSeriesSoliRespMsg.setName("SoliRespMsg");
+		chartFailedMsg = new XYChart.Series<>();
+		chartFailedMsg.setName("FailedMsg");
 		lineChart.getData().addAll(chartSeriesNetworkMsg, chartSeriesNetworkRespMsg, chartSeriesSoliMsg,
-				chartSeriesSoliRespMsg);
+				chartSeriesSoliRespMsg, chartFailedMsg);
 		fieldsumMsg = (TextField) primaryStage.getScene().lookup("#sumMsg");
 		fieldsumResp = (TextField) primaryStage.getScene().lookup("#sumMsgResp");
 		fieldsumSoliMsg = (TextField) primaryStage.getScene().lookup("#sumSoliMsg");
 		fieldsumSoliRespMsg = (TextField) primaryStage.getScene().lookup("#sumSoliRespMsg");
+		fieldsumMsg.setText("0");
+		fieldsumResp.setText("0");
+		fieldsumSoliMsg.setText("0");
+		fieldsumSoliRespMsg.setText("0");
+		
+		Button btnknotsdeakt = (Button) primaryStage.getScene().lookup("#btnknotsdeakt");
+		btnknotsdeakt.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent e) {
+				String selectedNodeID = knotsdeakt.getSelectionModel().getSelectedItem();
+				NetworkContainer.getInstance().getNetwork().sendActorController(selectedNodeID, false);
+			}
+		});
+
+		Button btnknotsakt = (Button) primaryStage.getScene().lookup("#btnknotsakt");
+		btnknotsakt.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				String selectedNodeID = knotsakt.getSelectionModel().getSelectedItem();
+				NetworkContainer.getInstance().getNetwork().sendActorController(selectedNodeID, true);
+			}
+		});
+		
 		animation = new Timeline();
 		animation.getKeyFrames()
 				.add(new KeyFrame(javafx.util.Duration.millis(SEQUENCE_DURATION), new EventHandler<ActionEvent>() {
@@ -96,6 +135,8 @@ public class NetworkGuiMain extends Application {
 
 					@Override
 					public void handle(ActionEvent arg0) {
+						knotsakt = (ChoiceBox<String>) primaryStage.getScene().lookup("#knotsakt");
+						knotsdeakt = (ChoiceBox<String>) primaryStage.getScene().lookup("#knotsdeakt");
 						final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
 						if (timer == 0 || System.currentTimeMillis() > timer) {
 							SYSTEM.scheduler().scheduleOnce(Duration.Zero(), publisher, "Tick", SYSTEM.dispatcher(),
@@ -118,16 +159,19 @@ public class NetworkGuiMain extends Application {
 								.getSolicitationResponseMsgModelsList();
 						final ObservableList<Data<Number, Number>> seriesSRM = chartSeriesSoliRespMsg.getData();
 						seriesSRM.add(new XYChart.Data<Number, Number>(counter, solicitationResponseMsgModelsList));
+						BigDecimal failedMsg = MDHelper.getInstance().getFailedNetworkMsgModelsList();
+						final ObservableList<Data<Number, Number>> seriesFM = chartFailedMsg.getData();
+						seriesFM.add(new XYChart.Data<Number, Number>(counter, failedMsg));
 						counter++;
 						NumberAxis xAxis = (NumberAxis) lineChart.getXAxis();
 						if (counter + 10 >= xAxis.getUpperBound()) {
 							xAxis.setUpperBound(xAxis.getUpperBound() + 1);
 							xAxis.setLowerBound(xAxis.getLowerBound() + 1);
 						}
-						fieldsumMsg.setText(String.valueOf(networkMsgModelsList));
-						fieldsumResp.setText(String.valueOf(networkMsgResponseModelsList));
-						fieldsumSoliMsg.setText(String.valueOf(solicitationMsgModelsList));
-						fieldsumSoliRespMsg.setText(String.valueOf(solicitationResponseMsgModelsList));
+						fieldsumMsg.setText(new BigDecimal(fieldsumMsg.getText()).add(networkMsgModelsList).toString());
+						fieldsumResp.setText(new BigDecimal(fieldsumResp.getText()).add(networkMsgResponseModelsList).toString());
+						fieldsumSoliMsg.setText(new BigDecimal(fieldsumSoliMsg.getText()).add(solicitationMsgModelsList).toString());
+						fieldsumSoliRespMsg.setText(new BigDecimal(fieldsumSoliRespMsg.getText()).add(solicitationResponseMsgModelsList).toString());
 					}
 
 				}));

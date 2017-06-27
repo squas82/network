@@ -80,22 +80,11 @@
 											<String fx:value="F" />
 											<String fx:value="G" />
 											<String fx:value="H" />
-											<String fx:value="I" />
-											<String fx:value="J" />
-											<String fx:value="K" />
-											<String fx:value="L" />
-											<String fx:value="M" />
-											<String fx:value="N" />
-											<String fx:value="O" />
-											<String fx:value="P" />
-											<String fx:value="Q" />
-											<String fx:value="R" />
-											<String fx:value="S" />
-											<String fx:value="T" />
+											<String fx:value="I" /> 
 										</FXCollections>
 									</items>
 								</ChoiceBox>
-								<Button alignment="CENTER" mnemonicParsing="false"
+								<Button id="btnknotsdeakt" alignment="CENTER" mnemonicParsing="false"
 									prefHeight="25.0" prefWidth="60.0" text="OK"
 									GridPane.columnIndex="2" GridPane.rowIndex="1" />
 								<Label prefHeight="25.0" prefWidth="140.0" text="Knoten deaktivieren"
@@ -117,21 +106,10 @@
 											<String fx:value="G" />
 											<String fx:value="H" />
 											<String fx:value="I" />
-											<String fx:value="J" />
-											<String fx:value="K" />
-											<String fx:value="L" />
-											<String fx:value="M" />
-											<String fx:value="N" />
-											<String fx:value="O" />
-											<String fx:value="P" />
-											<String fx:value="Q" />
-											<String fx:value="R" />
-											<String fx:value="S" />
-											<String fx:value="T" />
 										</FXCollections>
 									</items>
 								</ChoiceBox>
-								<Button mnemonicParsing="false" prefHeight="25.0"
+								<Button id="btnknotsakt" mnemonicParsing="false" prefHeight="25.0"
 									prefWidth="60.0" text="OK" GridPane.columnIndex="5"
 									GridPane.rowIndex="1" />
 							</children>
@@ -214,12 +192,12 @@
 								<TextField id="sum06" maxHeight="25.0" maxWidth="425.0"
 									minHeight="25.0" minWidth="425.0" prefHeight="25.0" prefWidth="425.0"
 									GridPane.columnIndex="1" GridPane.rowIndex="5" />
-								<AreaChart minHeight="500.0" prefHeight="500.0" prefWidth="796.0" id="lineChart" GridPane.columnSpan="2" GridPane.rowIndex="7">
+								<AreaChart minHeight="700.0" prefHeight="700.0" prefWidth="796.0" id="lineChart" GridPane.columnSpan="2" GridPane.rowIndex="7">
 									<xAxis>
-										<NumberAxis side="BOTTOM" />
+										<NumberAxis side="BOTTOM" animated="false" />
 									</xAxis>
 									<yAxis>
-										<NumberAxis side="LEFT" />
+										<NumberAxis side="LEFT" animated="false" />
 									</yAxis>
 								</AreaChart>
 							</children>
