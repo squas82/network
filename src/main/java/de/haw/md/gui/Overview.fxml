@@ -62,7 +62,7 @@
 							<children>
 								<ImageView fitHeight="452.0" fitWidth="790.0">
 									<image>
-										<Image url="file:src/main/resources/Zeichnung1.png" />
+										<Image url="file:src/main/resources/Zeichnung2.png" />
 									</image>
 									<GridPane.margin>
 										<Insets left="3.0" />
