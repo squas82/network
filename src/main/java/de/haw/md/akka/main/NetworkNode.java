@@ -298,6 +298,7 @@ public class NetworkNode extends UntypedActor {
 		if(object instanceof MsgModel) {
 			MsgModel tempObject = (MsgModel) object;
 			if(!proofSend(tempObject.getId())) {
+				MDHelper.getInstance().addMsgToMap(nodeID);
 				sendMessages.add(tempObject.getId());
 				DistributedPubSub.get(getContext().system()).mediator().tell(new DistributedPubSubMediator.Publish(channel, object), getSelf());
 			}

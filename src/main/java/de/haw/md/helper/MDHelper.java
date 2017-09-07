@@ -1,6 +1,8 @@
 package de.haw.md.helper;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.haw.md.akka.msg.MsgModel;
 
@@ -18,6 +20,8 @@ public class MDHelper {
 
 	private BigDecimal solicitationResponseMsgModelsList = BigDecimal.ZERO;
 
+	private Map<String, BigDecimal> msgCounterNode = new HashMap<>();
+
 	public static synchronized MDHelper getInstance() {
 		if (instance == null) {
 			instance = new MDHelper();
@@ -26,18 +30,18 @@ public class MDHelper {
 	}
 
 	public void addMsgToList(MsgModel msg) {
-//		if (msg instanceof NetworkMsgModel) {
-//			networkMsgModelsList++;
-//		}
-//		if (msg instanceof NetworkMsgResponseModel) {
-//			networkMsgResponseModelsList++;
-//		}
-//		if (msg instanceof RouteSolicitationMsgModel) {
-//			solicitationMsgModelsList++;
-//		}
-//		if (msg instanceof RouteSolicitationResponseMsgModel) {
-//			solicitationResponseMsgModelsList++;
-//		}
+		// if (msg instanceof NetworkMsgModel) {
+		// networkMsgModelsList++;
+		// }
+		// if (msg instanceof NetworkMsgResponseModel) {
+		// networkMsgResponseModelsList++;
+		// }
+		// if (msg instanceof RouteSolicitationMsgModel) {
+		// solicitationMsgModelsList++;
+		// }
+		// if (msg instanceof RouteSolicitationResponseMsgModel) {
+		// solicitationResponseMsgModelsList++;
+		// }
 	}
 
 	public BigDecimal getNetworkMsgModelsList() {
@@ -69,7 +73,22 @@ public class MDHelper {
 		solicitationResponseMsgModelsList = BigDecimal.ZERO;
 		return tmp;
 	}
-	
+
+	public BigDecimal getMsgCounterNode(String nodeId) {
+		if (msgCounterNode.containsKey(nodeId))
+			return msgCounterNode.get(nodeId) != null ? msgCounterNode.get(nodeId) : BigDecimal.ZERO;
+		else
+			return BigDecimal.ZERO;
+	}
+
+	public void addMsgToMap(String nodeId) {
+		if (msgCounterNode.containsKey(nodeId))
+			msgCounterNode.replace(nodeId, msgCounterNode.get(nodeId) != null
+					? msgCounterNode.get(nodeId).add(BigDecimal.ONE) : BigDecimal.ONE);
+		else
+			msgCounterNode.put(nodeId, BigDecimal.ONE);
+	}
+
 	public void addToFailedNetworkMsgModel() {
 		this.failedNetworkMsgModelsList = this.failedNetworkMsgModelsList.add(BigDecimal.ONE);
 	}

@@ -1,5 +1,8 @@
 package de.haw.md.akka.main;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import akka.cluster.pubsub.DistributedPubSub;
@@ -31,6 +34,10 @@ public class Network extends UntypedActor {
 		}
 		if (msg instanceof String) {
 			if (((String) msg).contains("Tick")) {
+				for (String nodeID : StaticValues.NODES) {
+					System.out.println("Node " + nodeID + " package sent: " + MDHelper.getInstance().getMsgCounterNode(nodeID));
+				}
+				System.out.println("=========================================================");
 //				if (!deactivatorSend) {
 //					int countOfRoutes = StaticValues.ROUTES.length - 1;
 //					ActorController actorController = new ActorController(
