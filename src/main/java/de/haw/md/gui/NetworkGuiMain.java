@@ -2,6 +2,10 @@ package de.haw.md.gui;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -16,13 +20,16 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Button;
@@ -57,6 +64,8 @@ public class NetworkGuiMain extends Application {
 	private XYChart.Series<Number, Number> chartSeriesSoliMsg;
 	private XYChart.Series<Number, Number> chartSeriesSoliRespMsg;
 	private XYChart.Series<Number, Number> chartFailedMsg;
+	private PieChart pieChart;
+	private Map<String, PieChart.Data> pieChartData;
 	
 	private ChoiceBox<String> knotsdeakt;
 	private ChoiceBox<String> knotsakt;
@@ -73,6 +82,17 @@ public class NetworkGuiMain extends Application {
 
 		initRootLayout();
 
+		pieChart = (PieChart) primaryStage.getScene().lookup("#pc_PieChart");
+		List<PieChart.Data> pieCharDataList = new ArrayList<>();
+		pieChartData = new HashMap<>();
+		for (String nodeID : StaticValues.NODES) {
+			PieChart.Data data = new PieChart.Data(nodeID, MDHelper.getInstance().getMsgCounterNode(nodeID).doubleValue());
+			pieChartData.put(nodeID, data);
+			pieCharDataList.add(data);
+		}
+		pieChart.setData(FXCollections.observableArrayList(pieCharDataList));
+		pieChart.setLegendSide(Side.LEFT);
+		
 		lineChart = (AreaChart<Number, Number>) primaryStage.getScene().lookup("#lineChart");
 		NumberAxis xAxis = (NumberAxis) lineChart.getXAxis();
 		NumberAxis yAxis = (NumberAxis) lineChart.getYAxis();
@@ -137,6 +157,11 @@ public class NetworkGuiMain extends Application {
 					public void handle(ActionEvent arg0) {
 						knotsakt = (ChoiceBox<String>) primaryStage.getScene().lookup("#knotsakt");
 						knotsdeakt = (ChoiceBox<String>) primaryStage.getScene().lookup("#knotsdeakt");
+						for (String nodeID : StaticValues.NODES) {
+							PieChart.Data pcData = pieChartData.get(nodeID);
+							pcData.setPieValue(MDHelper.getInstance().getMsgCounterNode(nodeID).doubleValue());
+							pcData.setName(nodeID + ": " + MDHelper.getInstance().getMsgCounterNode(nodeID).toString());
+						}
 						final ActorRef publisher = NetworkContainer.getInstance().getPublisher(CHANNEL);
 						if (timer == 0 || System.currentTimeMillis() > timer) {
 							SYSTEM.scheduler().scheduleOnce(Duration.Zero(), publisher, "Tick", SYSTEM.dispatcher(),

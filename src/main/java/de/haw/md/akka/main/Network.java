@@ -34,10 +34,10 @@ public class Network extends UntypedActor {
 		}
 		if (msg instanceof String) {
 			if (((String) msg).contains("Tick")) {
-				for (String nodeID : StaticValues.NODES) {
-					System.out.println("Node " + nodeID + " package sent: " + MDHelper.getInstance().getMsgCounterNode(nodeID));
-				}
-				System.out.println("=========================================================");
+//				for (String nodeID : StaticValues.NODES) {
+//					System.out.println("Node " + nodeID + " package sent: " + MDHelper.getInstance().getMsgCounterNode(nodeID));
+//				}
+//				System.out.println("=========================================================");
 //				if (!deactivatorSend) {
 //					int countOfRoutes = StaticValues.ROUTES.length - 1;
 //					ActorController actorController = new ActorController(
